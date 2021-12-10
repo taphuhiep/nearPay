@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./assets/favicon.ico" />
+    <link rel="apple-touch-icon" href="./assets/favicon.ico" />
+    <title>NEAR PAY</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .btn-primary {
+            background-color: #121313;
+        }
+        
+        .btn-primary:hover {
+            background-color: #121313;
+        }
+        
+        .nav-pills .nav-link.active,
+        .nav-pills .show>.nav-link {
+            background-color: #121313;
+        }
+    </style>
+</head>
+
+<body>
+    <main id="signed-out-flow" style="display: none">
+        <h1>Welcome to NEAR PAY!</h1>
+        <center>
+            <p>
+                Please sign in using NEAR Wallet.
+            </p>
+        </center>
+
+        <p style="text-align: center; margin-top: 2.5em">
+            <button id="sign-in-button">Sign in</button>
+        </p>
+    </main>
+
+    <div id="signed-in-flow" style="display: none">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <a class="navbar-brand" href="#">NEAR <image src="https://s3-us-west-1.amazonaws.com/compliance-ico-af-us-west-1/production/token_profiles/logos/original/9d5/c43/cc-/9d5c43cc-e232-4267-aa8a-8c654a55db2d-1608222929-b90bbe4696613e2faeb17d48ac3aa7ba6a83674a.png" width="30"></image> PAY</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+
+                    </li>
+                    <li class="nav-item">
+                        <p>
+
+                        </p>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button class="link" style="float: right" id="sign-out-button">
+              Sign out
+            </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+    </div>
+
+
+    <div class="container">
+        <center>
+            <h2 data-behavior="account-id"></h2>
+        </center>
+        <hr />
+    </div>
+
+    <div class="container">
+
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#mint-new-nft" id="add_new_nft">CREATE NEW PRODUCT</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#my-nfts" id="fetch_my_nfts_list">MY PRODUCT</a>
+            </li>
+
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div id="mint-new-nft" class="container tab-pane fade"><br>
+                <h3>CREATE A NEW PRODUCT</h3>
+                <form action="#">
+
+                    <div class="form-group">
+                        <label for="pwd">Title:</label>
+                        <input type="text" class="form-control" id="title" placeholder="Title" name="title">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pwd">Description:</label>
+                        <input type="text" class="form-control" id="description" placeholder="Description" name="description">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pwd">Image:</label>
+                        <input type="text" class="form-control" id="image" placeholder="Image" name="image">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pwd">Price (by NEAR):</label>
+                        <input type="text" class="form-control" id="price" placeholder="Price" name="price">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pwd">Amount:</label>
+                        <input type="text" class="form-control" id="amount" placeholder="Amount" name="amount">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" id="submit">Submit</button>
+                </form>
+
+                <button class="btn btn-primary btn-block" id="btn_test">Test</button>
+            </div>
+
+            <div id="my-nfts" class="container tab-pane fade"><br>
+                <div class="row" id="my_nfts_list">
+                </div>
+            </div>
+
+        </div>
+
+        <br>
+
+        <div class="row">
+            <img id="product_qrcode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=thang&format=png" class="mx-auto d-block">
+        </div>
+
+        <br>
+
+        <div class="row">
+            <!-- <center><p id="product_link"></p></center>  -->
+
+            <!-- The text field -->
+            <input type="text" class="form-control" value="Hello World" id="product_link" autocomplete="off">
+
+            <!-- The button used to copy the text -->
+            <button onclick="copyToClipboard()">Copy Link</button>
+
+        </div>
+
+
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">TRANSFERING PRODUCT ID:
+                            <p id="transfer_nft_id"></p>
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <p>Receiver:</p>
+                        <input name="transfer_receiver" id="transfer_receiver" />
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-block data-dismiss=" modal " id="btn_confirm_transfer ">CONFIRM</button>
+        </div>
+  
+      </div>
+    </div>
+    </div>
+
+    </div>
+
+    <div id="payment_card ">
+        <div class="row ">
+            <center><h2 id="merchant ">Card Image</h2></center>
+        </div>
+        <br />
+        <div class="card mx-auto d-block " style="width:400px " >
+            <img class="card-img-top " id="product_image " src="https://www.w3schools.com/bootstrap4/img_avatar1.png " alt="Card image " style="width:100% ">
+            <div class="card-body ">
+            <h4 class="card-title " id="product_title ">John Doe</h4>
+            <p class="card-text " id="product_description ">Some example text some example text. John Doe is an architect and engineer</p>
+
+            <p class="card-text " id="product_amount "></p>
+
+            <b><p class="card-text " id="product_price "></p></b>
+            <a href="# " class="btn btn-primary btn-block " id="btn_pay ">PAY</a>
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <script src="./index.js "></script>
+    <script src="./store.js "></script>
+    <script>
+        function copyToClipboard() {
+                /* Get the text field */
+                var copyText = document.getElementById("product_link ");
+            
+                /* Select the text field */
+                copyText.select();
+                copyText.setSelectionRange(0, 99999); /* For mobile devices */
+            
+                /* Copy the text inside the text field */
+                navigator.clipboard.writeText(copyText.value);
+            
+                /* Alert the copied text */
+                alert("Copied the text: " + copyText.value);
+        }
+
+    </script>
+
+</body>
+
+</html>
