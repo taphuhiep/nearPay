@@ -29,6 +29,8 @@ async function getProduct(productId) {
     let amount = product.amount;
     //$("div#products_list").append(product_item);
 
+    let order_message = $('#message').val();
+
     $('#merchant').text("MERCHANT: " + owner);
     $('#product_title').text(title);
     $('#product_description').text(description);
@@ -40,10 +42,15 @@ async function getProduct(productId) {
         e.preventDefault();
 
         try {
-
+            // send Money to the merchant
             let result = await sendToken(window.accountId, owner, price);
+            //create order
+            let result_order = await contract.createNewOrder({ product: product, buyer: window.accountId, seller: owner, message: order_message, status: "purchased" });
 
-            if (result.status.SuccessValue === "") {
+            console.log("order result:" + result_order);
+
+            if (result.status.SuccessValue === "" && result_order) {
+
                 Swal.fire({
                     title: 'DONE!',
                     text: 'PRODUCT PURCHASED!',
@@ -53,7 +60,7 @@ async function getProduct(productId) {
             } else {
                 Swal.fire({
                     title: 'ERROR!',
-                    text: 'ERROR occured! Please try again...! ' + result,
+                    text: 'ERROR occured! Please try again...! ' + result + ". " + result_order,
                     icon: 'error',
                     confirmButtonText: 'Cool'
                 });
@@ -61,7 +68,7 @@ async function getProduct(productId) {
         } catch (e) {
             Swal.fire({
                 title: 'ERROR!',
-                text: e,
+                text: "Message: " + e,
                 icon: 'error',
                 confirmButtonText: 'Cool'
             });
@@ -86,6 +93,8 @@ async function addProduct() {
             amount: amount
         });
 
+        product_id = parseInt(product_id) + 1;
+
         Swal.fire({
             title: 'DONE!',
             text: 'NEW PRODUCT ADDED!',
@@ -100,6 +109,8 @@ async function addProduct() {
 
         $('img#product_qrcode').attr('src', QRCode_image_src);
         $('input#product_link').val(base_payment_url + product_id);
+
+        $('#section_payment').show();
 
     } catch (e) {
         Swal.fire({
@@ -131,6 +142,8 @@ $(document).ready(async function() {
 
         //fetch product info
         await getProduct(productId);
+    } else {
+        $('div#section_payment').hide();
     }
 
     await fetchAccountBalance();
@@ -139,6 +152,7 @@ $(document).ready(async function() {
         e.preventDefault();
         $(this).html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Confirming...').addClass('disabled');
         await addProduct();
+
         $(this).text('Submit').removeClass('disabled');
     });
 

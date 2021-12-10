@@ -139,23 +139,26 @@
 
         <br>
 
-        <div class="row">
-            <img id="product_qrcode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=thang&format=png" class="mx-auto d-block">
+
+        <div id="section_payment">
+            <div class="row">
+                <img id="product_qrcode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=thang&format=png" class="mx-auto d-block">
+            </div>
+
+            <br>
+
+            <div class="row">
+                <!-- <center><p id="product_link"></p></center>  -->
+
+                <!-- The text field -->
+                <input type="text" class="form-control" value="" id="product_link" autocomplete="off">
+
+                <!-- The button used to copy the text -->
+                <button onclick="copyToClipboard()">Copy Link</button>
+
+            </div>
+
         </div>
-
-        <br>
-
-        <div class="row">
-            <!-- <center><p id="product_link"></p></center>  -->
-
-            <!-- The text field -->
-            <input type="text" class="form-control" value="Hello World" id="product_link" autocomplete="off">
-
-            <!-- The button used to copy the text -->
-            <button onclick="copyToClipboard()">Copy Link</button>
-
-        </div>
-
 
         <!-- The Modal -->
         <div class="modal" id="myModal">
@@ -193,14 +196,21 @@
         </div>
         <br />
         <div class="card mx-auto d-block " style="width:400px " >
-            <img class="card-img-top " id="product_image " src="https://www.w3schools.com/bootstrap4/img_avatar1.png " alt="Card image " style="width:100% ">
+            <img class="card-img-top " id="product_image " src="https://media.istockphoto.com/vectors/thumbnail-image-vector-graphic-vector-id1147544807?k=20&m=1147544807&s=612x612&w=0&h=pBhz1dkwsCMq37Udtp9sfxbjaMl27JUapoyYpQm0anc=" alt=" Card image
+                            " style="width:100% ">
             <div class="card-body ">
-            <h4 class="card-title " id="product_title ">John Doe</h4>
-            <p class="card-text " id="product_description ">Some example text some example text. John Doe is an architect and engineer</p>
+            <h4 class="card-title " id="product_title ">loading....</h4>
+            <p class="card-text " id="product_description ">loading....</p>
 
             <p class="card-text " id="product_amount "></p>
 
             <b><p class="card-text " id="product_price "></p></b>
+
+            <div class="form-group ">
+                <label for="comment ">Message to Merchant:</label>
+                <textarea class="form-control " rows="5 " id="message "></textarea>
+              </div>
+
             <a href="# " class="btn btn-primary btn-block " id="btn_pay ">PAY</a>
             </div>
         </div>
