@@ -13,6 +13,7 @@ export class Order {
     status: string;
 
     constructor(id: u64, product: Product, buyer: string, seller: string, message: string, status: string) {
+        this.id = id;
         this.created_at = env.block_timestamp().toString();
         this.product = product;
         this.buyer = buyer;

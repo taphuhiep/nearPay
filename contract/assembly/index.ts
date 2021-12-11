@@ -31,3 +31,14 @@ export function getProductById(product_id: u64) : Product {
       }
       return results[0];
 }
+
+export function getOrdersByOwner(owner: string) : Order[] {
+  let results = new Array<Order>();
+
+  for(let i = 0; i < orders.length; i ++) {
+      if(orders[i].seller == owner) {
+         results.push(orders[i]);
+      }
+  }
+  return results;
+}

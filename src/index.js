@@ -31,7 +31,7 @@ async function getProduct(productId) {
 
     let order_message = $('#message').val();
 
-    $('#merchant').text("MERCHANT: " + owner);
+    $('#merchant').text(owner);
     $('#product_title').text(title);
     $('#product_description').text(description);
     $('#product_image').attr('src', image);
@@ -74,6 +74,31 @@ async function getProduct(productId) {
             });
         }
 
+    });
+}
+
+async function getOrders() {
+    let orders = await contract.getOrdersByOwner({ owner: window.accountId });
+    console.log(orders);
+
+    orders.forEach((order) => {
+        let id = order.id;
+        //let owner = order.seller;
+        let buyer = order.buyer;
+        let message = order.message;
+        let status = order.status;
+
+        let product = order.product;
+        let product_id = product.id;
+        let title = product.title;
+        let description = product.description;
+        let image = product.image;
+        let price = product.price;
+        let amount = product.amount;
+
+        //let order_item = '<div class="col-md-4 mb-3"><div class="card h-100"><div class="d-flex justify-content-between position-absolute w-100"><div class="label-new"><span class="text-white bg-success small d-flex align-items-center px-2 py-1"><i class="fa fa-star" aria-hidden="true"></i><span class="ml-1">New</span></span></div><div class="label-sale"><span class="text-white bg-primary small d-flex align-items-center px-2 py-1"><i class="fa fa-tag" aria-hidden="true"></i><span class="ml-1">Sale</span></span></div></div><a href="#"><img src="'+ image +'" class="card-img-top" alt="Product"></a><div class="card-body px-2 pb-2 pt-1"><div class="d-flex justify-content-between"><div><p class="h4 text-primary">$ '+ price +'</p></div><div><a href="#" class="text-secondary lead" data-toggle="tooltip" data-placement="left" title="Compare"><i class="fa fa-line-chart" aria-hidden="true"></i></a></div></div><p class="mb-0"><strong><a href="#" class="text-secondary">'+ title +'</a></strong></p><p class="mb-1"><small><a href="#" class="text-secondary">'+ amount +'</a></small></p><div class="d-flex mb-3 justify-content-between">'+ description +'</div><div class="d-flex justify-content-between"><div class="col px-0"><button class="btn btn-outline-primary btn-block btn_buy" id="'+ id+'" owner="'+ buyer +'" price="'+ price +'">BUY<i class="fa fa-shopping-basket" aria-hidden="true"></i></button></div></div></div></div></div>';
+        let order_item2 = '<div class="col-md-4 mb-3"><div class="card" style="width:400px"><img class="card-img-top" src="' + image + '" alt="Card image" style="width:100%"><div class="card-body"><h4 class="card-title">[ID: ' + product_id + '] ' + title + '</h4><p class="card-text">PRICE: ' + price + ' NEAR</p><p class="card-text">ORDER STATUS: ' + status + '</p><p class="card-text">BUYER MESSAGE: ' + message + '</p><a href="#" class="btn btn-primary">BUYER: ' + buyer + '</a></div></div></div>';
+        $("div#orders_list").append(order_item2);
     });
 }
 
@@ -144,6 +169,7 @@ $(document).ready(async function() {
         await getProduct(productId);
     } else {
         $('div#section_payment').hide();
+        await getOrders();
     }
 
     await fetchAccountBalance();
