@@ -1,6 +1,6 @@
 import 'regenerator-runtime/runtime'
 import { utils } from 'near-api-js';
-import { initContract, login, logout, sendToken, getAccountBalance } from './utils'
+import { initContract, login, logout, sendToken, getAccountBalance, convertNearAmount } from './utils'
 import getConfig from './config'
 const { networkId } = getConfig(process.env.NODE_ENV || 'development')
 
@@ -38,14 +38,18 @@ async function getProduct(productId) {
     $('#product_amount').text("Remain amount: " + amount);
     $('#product_price').text('Price: ' + price + ' NEAR');
 
-    $('#btn_pay').click(async function(e) {
-        e.preventDefault();
+    $('#btn_pay').click(async function(event) {
+        event.preventDefault();
 
         try {
             // send Money to the merchant
-            let result = await sendToken(window.accountId, owner, price);
+            //let result = await sendToken(window.accountId, owner, price);
             //create order
-            let result_order = await contract.createNewOrder({ product: product, buyer: window.accountId, seller: owner, message: order_message, status: "purchased" });
+            let BOATLOAD_OF_GAS = 300000000000000;
+            console.log("gas: " + BOATLOAD_OF_GAS);
+            let trasfer_amount = convertNearAmount(price);
+            console.log("transfer amount: " + trasfer_amount);
+            let result_order = await contract.createNewOrder({ product: product, buyer: window.accountId, seller: owner, message: order_message, status: "purchased" }, BOATLOAD_OF_GAS, trasfer_amount);
 
             console.log("order result:" + result_order);
 
@@ -65,10 +69,10 @@ async function getProduct(productId) {
                     confirmButtonText: 'Cool'
                 });
             }
-        } catch (e) {
+        } catch (error) {
             Swal.fire({
                 title: 'ERROR!',
-                text: "Message: " + e,
+                text: "Message: " + error,
                 icon: 'error',
                 confirmButtonText: 'Cool'
             });
@@ -200,12 +204,12 @@ $(document).ready(async function() {
         // let rs1 = await window.contract.getNFTOwner({tokenId:'2'});
         // let rs2 = await window.contract.getNFTMetaData({tokenId:'2'});
         // let rs3 = await window.contract.getAllNFTsByOwner({accountId: 'madlife.testnet'});
-        let rs1 = await sendToken(window.accountId, 'madlife.testnet', 10);
+        //let rs1 = await sendToken(window.accountId, 'madlife.testnet', 10);
 
-        console.log(rs1);
+        //console.log(rs1);
         // console.log(rs2);
         // console.log(rs3);
-        alert(rs1);
+        //alert(rs1);
     });
 });
 

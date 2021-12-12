@@ -1,4 +1,4 @@
-import { connect, Contract, keyStores, WalletConnection, utils } from 'near-api-js'
+import { connect, Contract, keyStores, KeyPair, WalletConnection, utils } from 'near-api-js';
 import getConfig from './config'
 
 const nearConfig = getConfig(process.env.NODE_ENV || 'development')
@@ -14,8 +14,23 @@ export async function initContract() {
 
     // Getting the Account ID. If still unauthorized, it's just empty string
     window.accountId = window.walletConnection.getAccountId()
+        /*** 
+            // Getting Account.
+            let account = await near.account(window.accountId);
+            window.account = account;
 
-    // Initializing our contract APIs by contract name and configuration
+            console.log("logined account: " + JSON.stringify(account.connection.signer.keyStore.localStorage));
+
+            //ed25519:51DnbRf8qdAN7EmDSMUXwfqCeoHJentT2XoL4a65gseX8gBB3gabA6opup1YMvE32vBPFFUKRGbYCzUGm4P4mx4F
+
+            const keyPair = KeyPair.fromString('ed25519:51DnbRf8qdAN7EmDSMUXwfqCeoHJentT2XoL4a65gseX8gBB3gabA6opup1YMvE32vBPFFUKRGbYCzUGm4P4mx4F');
+            let public_key = keyPair.getPublicKey().toString();
+            window.public_key = public_key;
+            console.log("keypair: " + public_key);
+
+            //console.log("account detail: " + JSON.stringify(account));
+        ***/
+        // Initializing our contract APIs by contract name and configuration
     window.contract = await new Contract(window.walletConnection.account(), nearConfig.contractName, {
         // View methods are read only. They don't modify the state, but usually return some value.
         viewMethods: ['getProductById', 'getOrdersByOwner'],
@@ -46,6 +61,10 @@ export async function sendToken(_from, _to, _amount) {
         amount // amount in yoctoNEAR
     );
     return result;
+}
+
+export function convertNearAmount(amount) {
+    return utils.format.parseNearAmount(amount);
 }
 
 export async function getAccountBalance(_account) {
