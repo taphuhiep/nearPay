@@ -4,7 +4,6 @@ import { initContract, login, logout, sendToken, getAccountBalance, convertNearA
 import getConfig from './config'
 const { networkId } = getConfig(process.env.NODE_ENV || 'development')
 
-
 async function fetchAccountBalance() {
     let myAccount = window.accountId;
     let balance = await getAccountBalance(myAccount);
@@ -12,7 +11,7 @@ async function fetchAccountBalance() {
     let balanceInNear = utils.format.formatNearAmount(available);
     balanceInNear = parseFloat(balanceInNear).toFixed(4);
     console.log(balance);
-    $('span#account_balance').text(balanceInNear);
+    $('span#account_balance').text("Available Balance: " + balanceInNear + " NEAR");
 }
 
 async function getProduct(productId) {
