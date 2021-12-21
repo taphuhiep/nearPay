@@ -3,9 +3,7 @@ NearPay
 
 Payment using Near Blockchain
 
-Demo: 
-
-Slide: 
+Demo: http://nearpay.fun:39857/
 
 Quick Start
 ===========
