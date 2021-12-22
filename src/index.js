@@ -131,7 +131,7 @@ async function addProduct() {
             confirmButtonText: 'Cool'
         });
 
-        let base_payment_url = "https://1234-green-kiwi-5n1qivfn.ws-us23.gitpod.io/?action=pay&productId=";
+        let base_payment_url = "http://nearpay.fun:39073/?action=pay&productId=";
         let QRCode_generator_url = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&format=png&data=";
 
         let QRCode_image_src = QRCode_generator_url + base_payment_url + product_id;
